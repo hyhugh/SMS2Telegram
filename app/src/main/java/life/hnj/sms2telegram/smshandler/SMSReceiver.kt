@@ -16,6 +16,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import life.hnj.sms2telegram.getBooleanVal
 import life.hnj.sms2telegram.sync2TelegramKey
+import kotlin.math.max
 
 
 private const val TAG = "SMSHandler"
@@ -35,13 +36,14 @@ class SMSReceiver : BroadcastReceiver() {
         val bundle = intent.extras
         val format = bundle?.getString("format")
         val pdus = bundle!!["pdus"] as Array<*>?
-        val simIndex = bundle.getInt("android.telephony.extra.SLOT_INDEX", -1)
+        val simIndex =
+            max(bundle.getInt("phone", -1), bundle.getInt("android.telephony.extra.SLOT_INDEX", -1))
         Log.d(TAG, bundle.toString())
         val store = PreferenceManager.getDefaultSharedPreferences(context)
         val phoneNum = when (simIndex) {
             0 -> store.getString("sim0_number", "Please configure phone number in settings")
             1 -> store.getString("sim1_number", "Please configure phone number in settings")
-            else -> "Unsupported feature (please contact the developer"
+            else -> "Unsupported feature (please contact the developer)"
         }
 
         if (pdus != null) {
