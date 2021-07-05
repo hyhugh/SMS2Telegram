@@ -18,4 +18,6 @@
     <string name="enable_telegram_sync_key">sms2telegram.settings.tg.enabled</string>
     <string name="enable_telegram_bot_key_key">sms2telegram.settings.tg.bot.key</string>
     <string name="enable_telegram_chat_id_key">sms2telegram.settings.tg.chat.id</string>
+    <string name="sim0_number">Number of Sim 1</string>
+    <string name="sim1_number">Number of Sim 2</string>
 </resources>

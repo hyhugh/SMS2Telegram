@@ -12,6 +12,16 @@
             app:title="@string/telegram_chat_id"
             app:useSimpleSummaryProvider="true" />
 
+        <EditTextPreference
+            app:key="sim0_number"
+            app:title="@string/sim0_number"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="sim1_number"
+            app:title="@string/sim1_number"
+            app:useSimpleSummaryProvider="true" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
