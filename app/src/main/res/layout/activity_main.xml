@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:titleTextColor="?attr/colorOnPrimarySurface"
+        android:elevation="4dp"
+        android:theme="@style/Theme.SMS2Telegram"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.SMS2Telegram"
+        app:menu="@menu/actionbar_menu"
+        />
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/enable_telegram_sync"
+        android:layout_width="379dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/sync_telegram_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/action_bar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SMS2Telegram</string>
+    <!-- Settings Activity Title -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+
+    <!-- Messages Preferences -->
+    <string name="telegram_settings">Telegram Settings</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_telegram_title">Sync SMS to telegram</string>
+    <string name="action_settings">Settings</string>
+    <string name="telegram_bot_key">Telegram Bot Key</string>
+    <string name="telegram_chat_id">Telegram Chat Id</string>
+
+    <string name="enable_telegram_sync_key">sms2telegram.settings.tg.enabled</string>
+    <string name="enable_telegram_bot_key_key">sms2telegram.settings.tg.bot.key</string>
+    <string name="enable_telegram_chat_id_key">sms2telegram.settings.tg.chat.id</string>
+</resources>

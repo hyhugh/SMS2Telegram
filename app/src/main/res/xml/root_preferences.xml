@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/messages_header">
+
+        <EditTextPreference
+            app:key="telegram_bot_key"
+            app:title="@string/telegram_bot_key"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            app:key="telegram_chat_id"
+            app:title="@string/telegram_chat_id"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
