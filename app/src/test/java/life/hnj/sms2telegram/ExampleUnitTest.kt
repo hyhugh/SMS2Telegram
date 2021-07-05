@@ -1,7 +1,5 @@
 package life.hnj.sms2telegram
 
-import org.junit.Test
-
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -9,7 +7,5 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
-    @Test
-    fun addition_isCorrect() {
-    }
+    //TODO(hugh): add some tests
 }
