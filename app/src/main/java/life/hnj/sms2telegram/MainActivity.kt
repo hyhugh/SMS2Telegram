@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -19,10 +20,12 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.runBlocking
+import life.hnj.sms2telegram.smshandler.SMSHandleBackgroundService
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
+    val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -55,15 +58,35 @@ class MainActivity : AppCompatActivity() {
         val sync2TgEnabled = getBooleanVal(applicationContext, sync2TgEnabledKey)
 
         val toggle = findViewById<SwitchCompat>(R.id.enable_telegram_sync)
+        val serviceIntent = Intent(
+            applicationContext, SMSHandleBackgroundService::class.java
+        )
         if (sync2TgEnabled) {
             checkPermission(Manifest.permission.RECEIVE_SMS, requestPermissionLauncher)
+            startSMSService(serviceIntent)
         }
         toggle.isChecked = sync2TgEnabled
         toggle.setOnCheckedChangeListener { _, isChecked ->
             runBlocking { setSync2TgEnabled(sync2TgEnabledKey, isChecked) }
             if (isChecked) {
                 checkPermission(Manifest.permission.RECEIVE_SMS, requestPermissionLauncher)
+                startSMSService(serviceIntent)
+            } else {
+                applicationContext.stopService(serviceIntent)
+                Toast.makeText(applicationContext, "The service stopped", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun startSMSService(serviceIntent: Intent) {
+        val alreadyStarted = applicationContext.startService(serviceIntent)
+        if (alreadyStarted != null) {
+            Log.d(TAG, "The service is already started")
+            Toast.makeText(applicationContext, "The service is already started", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            Log.d(TAG, "Background service started")
+            Toast.makeText(applicationContext, "The service started", Toast.LENGTH_SHORT).show()
         }
     }
 

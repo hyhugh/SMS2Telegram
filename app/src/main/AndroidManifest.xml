@@ -13,26 +13,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMS2Telegram">
-        <receiver
-            android:name=".smshandler.SMSReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BROADCAST_SMS">
-            <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-
-        </receiver>
+        <service android:name=".smshandler.SMSHandleBackgroundService"/>
 
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity">
@@ -44,7 +35,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="life.hnj.sms2telegram.MainActivity" />
         </activity>
-
     </application>
 
 </manifest>
