@@ -20,7 +20,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.runBlocking
-import life.hnj.sms2telegram.smshandler.SMSHandleBackgroundService
+import life.hnj.sms2telegram.smshandler.SMSHandleForegroundService
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
         val toggle = findViewById<SwitchCompat>(R.id.enable_telegram_sync)
         val serviceIntent = Intent(
-            applicationContext, SMSHandleBackgroundService::class.java
+            applicationContext, SMSHandleForegroundService::class.java
         )
         if (sync2TgEnabled) {
             checkPermission(Manifest.permission.RECEIVE_SMS, requestPermissionLauncher)
