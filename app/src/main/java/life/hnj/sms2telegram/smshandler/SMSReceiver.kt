@@ -22,7 +22,7 @@ import kotlin.math.max
 private const val TAG = "SMSHandler"
 
 class SMSReceiver : BroadcastReceiver() {
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onReceive(context: Context, intent: Intent) {
         val sync2TgEnabledKey = sync2TelegramKey(context.resources)
         val sync2TgEnabled = getBooleanVal(context, sync2TgEnabledKey)
@@ -49,13 +49,20 @@ class SMSReceiver : BroadcastReceiver() {
         if (pdus != null) {
             val msgs: List<SmsMessage?> =
                 pdus.map { i -> SmsMessage.createFromPdu(i as ByteArray, format) }
+            val fromAddrToMsgBody = HashMap<String, String>()
             for (msg in msgs) {
+                val fromAddr = msg?.originatingAddress!!
+                fromAddrToMsgBody[fromAddr] =
+                    fromAddrToMsgBody.getOrDefault(fromAddr, "") + msg.messageBody
+            }
+
+            for (entry in fromAddrToMsgBody) {
                 // Build the message to show.
                 val strMessage = """
-                    New SMS from ${msg?.originatingAddress}
+                    New SMS from ${entry.key}
                     to $phoneNum
                     
-                    ${msg?.messageBody}
+                    ${entry.value}
                 """.trimIndent()
 
                 Log.d(TAG, "onReceive: $strMessage")
