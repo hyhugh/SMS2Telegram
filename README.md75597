@@ -1,4 +1,4 @@
-# SMS2Telegram
+# layanan info
 
 Barebone background service that forwards your incoming new SMS (text message) into a chat with a telegram bot.
 This program does not connect to any intermediate server, it simply issues a new request to telegram bot API each time the phone gets a new SMS.
