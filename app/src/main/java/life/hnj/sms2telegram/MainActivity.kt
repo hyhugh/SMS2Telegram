@@ -25,7 +25,6 @@ import life.hnj.sms2telegram.smshandler.SMSHandleForegroundService
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class MainActivity : AppCompatActivity() {
-    val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         val requestPermissionLauncher =
             registerForActivityResult(
@@ -129,9 +128,14 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+
             else -> {
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "MainActivity"
     }
 }

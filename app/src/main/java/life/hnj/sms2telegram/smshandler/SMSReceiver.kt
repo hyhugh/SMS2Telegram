@@ -4,11 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
@@ -22,7 +20,6 @@ import kotlin.math.max
 private const val TAG = "SMSHandler"
 
 class SMSReceiver : BroadcastReceiver() {
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onReceive(context: Context, intent: Intent) {
         val sync2TgEnabledKey = sync2TelegramKey(context.resources)
         val sync2TgEnabled = getBooleanVal(context, sync2TgEnabledKey)
@@ -33,9 +30,9 @@ class SMSReceiver : BroadcastReceiver() {
 
         Log.d(TAG, "sync2TgEnabled, and received new sms")
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
-        val bundle = intent.extras
-        val format = bundle?.getString("format")
-        val pdus = bundle!!["pdus"] as Array<*>?
+        val bundle = intent.extras ?: return
+        val format = bundle.getString("format")
+        val pdus = bundle["pdus"] as Array<*>? ?: return
         val simIndex =
             max(bundle.getInt("phone", -1), bundle.getInt("android.telephony.extra.SLOT_INDEX", -1))
         Log.d(TAG, bundle.toString())
@@ -46,36 +43,34 @@ class SMSReceiver : BroadcastReceiver() {
             else -> "Unsupported feature (please contact the developer)"
         }
 
-        if (pdus != null) {
-            val msgs: List<SmsMessage?> =
-                pdus.map { i -> SmsMessage.createFromPdu(i as ByteArray, format) }
-            val fromAddrToMsgBody = HashMap<String, String>()
-            for (msg in msgs) {
-                val fromAddr = msg?.originatingAddress!!
-                fromAddrToMsgBody[fromAddr] =
-                    fromAddrToMsgBody.getOrDefault(fromAddr, "") + msg.messageBody
-            }
+        val msgs: List<SmsMessage?> =
+            pdus.map { i -> SmsMessage.createFromPdu(i as ByteArray, format) }
+        val fromAddrToMsgBody = HashMap<String, String>()
+        for (msg in msgs) {
+            val fromAddr = msg?.originatingAddress ?: "unknown"
+            fromAddrToMsgBody[fromAddr] =
+                fromAddrToMsgBody.getOrDefault(fromAddr, "") + msg?.messageBody
+        }
 
-            for (entry in fromAddrToMsgBody) {
-                // Build the message to show.
-                val strMessage = """
-                    New SMS from ${entry.key}
-                    to $phoneNum
-                    
-                    ${entry.value}
-                """.trimIndent()
+        for (entry in fromAddrToMsgBody) {
+            // Build the message to show.
+            val strMessage = """
+                New SMS from ${entry.key}
+                to $phoneNum
+                
+                ${entry.value}
+            """.trimIndent()
 
-                Log.d(TAG, "onReceive: $strMessage")
+            Log.d(TAG, "onReceive: $strMessage")
 
-                sync2Telegram(store, context, strMessage)
-            }
+            sync2Telegram(store, context, strMessage)
         }
     }
 
     private fun sync2Telegram(
         store: SharedPreferences,
         context: Context,
-        strMessage: String
+        strMessage: String,
     ) {
         val botKey = store.getString("telegram_bot_key", "")
         if (botKey.isNullOrEmpty()) {

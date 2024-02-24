@@ -25,12 +25,10 @@ class SettingsActivity : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             val horizontalMargin = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                2F, resources.displayMetrics
+                TypedValue.COMPLEX_UNIT_DIP, 2F, resources.displayMetrics
             )
             val verticalMargin = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                2F, resources.displayMetrics
+                TypedValue.COMPLEX_UNIT_DIP, 2F, resources.displayMetrics
             )
             val topMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -39,7 +37,9 @@ class SettingsActivity : AppCompatActivity() {
             )
             listView.setPadding(
                 horizontalMargin.toInt(),
-                topMargin.toInt(), horizontalMargin.toInt(), verticalMargin.toInt()
+                topMargin.toInt(),
+                horizontalMargin.toInt(),
+                verticalMargin.toInt(),
             )
 
             super.onViewCreated(view, savedInstanceState)

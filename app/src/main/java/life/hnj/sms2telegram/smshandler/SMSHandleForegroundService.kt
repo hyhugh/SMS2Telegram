@@ -17,9 +17,8 @@ import life.hnj.sms2telegram.MainActivity
 
 class SMSHandleForegroundService : Service() {
     private var receiver = SMSReceiver()
-    private val TAG = "SMSReceiverService"
     override fun onBind(intent: Intent?): IBinder? {
-        return null;
+        return null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -69,5 +68,9 @@ class SMSHandleForegroundService : Service() {
         val service = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         service.createNotificationChannel(channel)
         return channelId
+    }
+
+    private companion object {
+        const val TAG = "SMSReceiverService"
     }
 }
