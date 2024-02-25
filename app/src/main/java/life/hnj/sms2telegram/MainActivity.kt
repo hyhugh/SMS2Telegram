@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         )
         if (sync2TgEnabled) {
             checkPermission(Manifest.permission.RECEIVE_SMS, requestPermissionLauncher)
+            checkPermission(Manifest.permission.POST_NOTIFICATIONS, requestPermissionLauncher)
             startSMSService(serviceIntent)
         }
         toggle.isChecked = sync2TgEnabled
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             runBlocking { setSync2TgEnabled(sync2TgEnabledKey, isChecked) }
             if (isChecked) {
                 checkPermission(Manifest.permission.RECEIVE_SMS, requestPermissionLauncher)
+                checkPermission(Manifest.permission.POST_NOTIFICATIONS, requestPermissionLauncher)
                 startSMSService(serviceIntent)
             } else {
                 applicationContext.stopService(serviceIntent)

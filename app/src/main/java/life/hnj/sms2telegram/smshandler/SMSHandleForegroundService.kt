@@ -5,6 +5,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo
 import android.graphics.Color
 import android.os.Build
 import android.os.IBinder
@@ -21,13 +22,12 @@ class SMSHandleForegroundService : Service() {
         return null
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "Registering the receiver")
         Toast.makeText(applicationContext, "Registering the receiver", Toast.LENGTH_LONG).show()
 
         val notification = createNotification()
-        startForeground(1, notification)
+        startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
 
         registerReceiver(
             receiver,
@@ -35,15 +35,18 @@ class SMSHandleForegroundService : Service() {
             Manifest.permission.BROADCAST_SMS,
             null
         )
+
         // Restart when closed
         return START_STICKY
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotification(): Notification {
         val input = "SMS2Telegram running in the background"
         val notificationIntent = Intent(applicationContext, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, notificationIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE,
+        )
         val channelId = createNotificationChannel("SMS2TELEGRAM", "SMS2TelegramService")
         return NotificationCompat.Builder(applicationContext, channelId)
             .setContentTitle("SMS2Telegram Service")
@@ -53,11 +56,9 @@ class SMSHandleForegroundService : Service() {
     }
 
     override fun onDestroy() {
-        unregisterReceiver(receiver)
         super.onDestroy()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
         val channel = NotificationChannel(
             channelId,
