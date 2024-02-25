@@ -56,6 +56,7 @@ class SMSHandleForegroundService : Service() {
     }
 
     override fun onDestroy() {
+        unregisterReceiver(receiver)
         super.onDestroy()
     }
 
